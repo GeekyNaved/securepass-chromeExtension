@@ -69,6 +69,18 @@ export default function App() {
       doDecryption(encryptedTxt);
     }
   }
+  // copy to clipboard
+  const copy = () => {
+    navigator.clipboard.writeText(encryptedTxt)
+      .then(() => {
+        console.log('Text copied to clipboard:', encryptedTxt);
+        toast.success('Text copied to clipboard!', { toastId: "success" });
+      })
+      .catch(() => {
+        // console.error('Error copying text:', error);
+        toast.error('Error copying text. Please try again.');
+      });
+  }
   const clear = () => {
     setPlainTxt("");
     setEncryptedTxt("");
@@ -84,7 +96,7 @@ export default function App() {
             <textarea rows={6} value={encryptedTxt} className="p-2 w-full border rounded-sm resize-none"
               placeholder="Encrypted Password will come here" onChange={handleEncryptedTxtChange} />
             <div className="flex justify-end">
-              <button className="text-white bg-blue-600 hover:bg-opacity-50 mt-2 text-md px-4 py-2 border-none rounded-md">copy</button>
+              <button className="text-white bg-blue-600 hover:bg-opacity-50 mt-2 text-md px-4 py-2 border-none rounded-md" onClick={copy}>copy</button>
             </div>
           </div>
           <div className="mt-4">
