@@ -11,12 +11,14 @@ export default function App() {
 
   const handlePlainTxtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setPlainTxt(e.target.value);
+    const newPlainTxt = e.target.value.replace(/\s+/g, ""); // removing whitespaces.
+    setPlainTxt(newPlainTxt);
   }
 
   const handleEncryptedTxtChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
-    setEncryptedTxt(e.target.value);
+    const newEncryptedTxt = e.target.value.replace(/\s+/g, ""); // removing whitespaces.
+    setEncryptedTxt(newEncryptedTxt);
   }
 
   const doEncryption = async (text: string) => {
