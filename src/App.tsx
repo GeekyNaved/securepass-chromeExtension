@@ -3,11 +3,11 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const URL = "http://localhost:3000/api/";
+const URL = "http://localhost:3000/api";
 
 export default function App() {
-  const [plainTxt, setPlainTxt] = useState("");
-  const [encryptedTxt, setEncryptedTxt] = useState("");
+  const [plainTxt, setPlainTxt] = useState<string>("");
+  const [encryptedTxt, setEncryptedTxt] = useState<string>("");
 
   const handlePlainTxtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -20,8 +20,17 @@ export default function App() {
   }
 
   const doEncryption = async (text: string) => {
-    const response = await axios(`${URL}/encrypt?plainText=${text}`);
-    console.log('response.data', response.data.result);
+    try {
+      const response = await axios(`${URL}/encrypt?plainText=${text}`);
+      // console.log('response.data', response.data.result);
+      if (response.data?.msg === "encrypted successfully") {
+        setEncryptedTxt(response.data.result);
+      } else {
+        toast.error("Something went try again. Please try again", { toastId: "tryBlockErr" })
+      }
+    } catch (e) {
+      toast.error('Server error: something went try again. Please try again', { toastId: "catchBlockErr" });
+    }
 
   }
 
@@ -32,7 +41,7 @@ export default function App() {
     }
     else {
       doEncryption(plainTxt);
-      setEncryptedTxt(encryptedTxt + plainTxt);
+      // setEncryptedTxt(encryptedTxt + plainTxt);
     }
   }
 
