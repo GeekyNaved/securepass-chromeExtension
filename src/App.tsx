@@ -24,7 +24,6 @@ export default function App() {
   const doEncryption = async (text: string) => {
     try {
       const response = await axios(`${URL}/encrypt?plainText=${text}`);
-      // console.log('response.data', response.data.result);
       if (response.data?.msg === "encrypted successfully") {
         setEncryptedTxt(response.data.result);
       } else {
@@ -37,13 +36,11 @@ export default function App() {
   }
 
   const generatePassword = () => {
-    // console.log('plainTxt', plainTxt);
     if (plainTxt?.length == 0 || plainTxt?.length < 3) {
       toast.warning("please enter atleast 3 characters in plain text field", { toastId: 'characters' });
     }
     else {
       doEncryption(plainTxt);
-      // setEncryptedTxt(encryptedTxt + plainTxt);
     }
   }
 
@@ -51,7 +48,6 @@ export default function App() {
   const doDecryption = async (text: string) => {
     try {
       const response = await axios(`${URL}/decrypt?encryptedText=${text}`);
-      // console.log('response.data', response.data.result);
       if (response.data?.msg === "decrypted successfully") {
         setPlainTxt(response.data.result);
       } else {
@@ -66,7 +62,6 @@ export default function App() {
   }
 
   const decryptPassword = () => {
-    console.log('encryptedTxt', encryptedTxt);
     if (encryptedTxt?.length == 0) {
       toast.warning("please enter some value in encrypted text field", { toastId: 'encryptedTxtField' });
     }
@@ -109,7 +104,6 @@ export default function App() {
         draggable={false}
         pauseOnHover
         theme="dark"
-      // className="custom-toast"
       />
     </div>
   );
