@@ -47,14 +47,32 @@ export default function App() {
     }
   }
 
+
+  const doDecryption = async (text: string) => {
+    try {
+      const response = await axios(`${URL}/decrypt?encryptedText=${text}`);
+      // console.log('response.data', response.data.result);
+      if (response.data?.msg === "decrypted successfully") {
+        setPlainTxt(response.data.result);
+      } else {
+        toast.error("Something went try again. Please try again", { toastId: "tryBlockErrDecrypt" })
+      }
+    } catch (e: any) {
+      if (e.response?.data?.msg === "Encrypted text is not valid") {
+        toast.error("Encrypted text is not valid. Please try again", { toastId: "invalid" })
+      } else toast.error('Server error: something went try again. Please try again', { toastId: "catchBlockErrDecrypt" });
+    }
+
+  }
+
   const decryptPassword = () => {
     console.log('encryptedTxt', encryptedTxt);
-    // if (plainTxt?.length < 0) {
-    //   alert("please enter atleast a single character in plain text field");
-    // }
-    // else {
-    //   setEncryptedTxt(plainTxt);
-    // }
+    if (encryptedTxt?.length == 0) {
+      toast.warning("please enter some value in encrypted text field", { toastId: 'encryptedTxtField' });
+    }
+    else {
+      doDecryption(encryptedTxt);
+    }
   }
   const clear = () => {
     setPlainTxt("");
@@ -77,7 +95,7 @@ export default function App() {
           <div className="mt-4">
             <button className="text-white bg-green-600 hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={generatePassword}>Generate (Encrypt)</button>
             <button className="text-white bg-red-600 hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={decryptPassword}>Decrypt (Generate original text)</button>
-            <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={clear}> Clear Text</button>
+            <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={clear}> Clear All</button>
           </div>
         </div>
       </div>
