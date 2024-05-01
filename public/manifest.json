@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "securepass-extension",
+    "name": "securepass",
     "version": "1.0",
-    "description": "",
+    "description": "SecurePass is your ultimate solution for managing passwords securely and generating robust, random passphrases. With SecurePass, you can effortlessly fortify your online security and protect your valuable accounts from unauthorized access.",
     "action": {
         "default_popup": "index.html"
     },
@@ -14,5 +14,10 @@
     "host_permissions": [
         "https://*/*",
         "http://*/*"
-    ]
+    ],
+    "icons": {
+        "16": "favicon-16x16.png",
+        "48": "favicon-32x32.png",
+        "128": "android-chrome-192x192.png"
+    }
   }
