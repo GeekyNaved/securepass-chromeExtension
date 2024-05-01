@@ -97,7 +97,7 @@ export default function App() {
             <textarea rows={6} value={encryptedTxt} className="p-2 w-full border rounded-sm resize-none"
               placeholder="Encrypted Password will come here" onChange={handleEncryptedTxtChange} />
             <div className="flex justify-end">
-              <button className="text-white bg-blue-600 hover:bg-opacity-50 mt-2 text-md px-4 py-2 border-none rounded-md" onClick={copy}>copy</button>
+              <button className="text-white bg-blue-600 hover:bg-opacity-50 mt-2 text-md px-4 py-2 border-none rounded-md disabled:bg-opacity-20" onClick={copy} disabled={encryptedTxt?.length == 0 ? true : false}>copy</button>
             </div>
           </div>
           <div className="mt-4">
