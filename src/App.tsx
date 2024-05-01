@@ -47,7 +47,8 @@ export default function App() {
 
   const doDecryption = async (text: string) => {
     try {
-      const response = await axios(`${URL}/decrypt?encryptedText=${text}`);
+      const updatedText = encodeURIComponent(text);
+      const response = await axios(`${URL}/decrypt?encryptedText=${updatedText}`);
       if (response.data?.msg === "decrypted successfully") {
         setPlainTxt(response.data.result);
       } else {
