@@ -23,7 +23,9 @@ export default function App() {
 
   const doEncryption = async (text: string) => {
     try {
-      const response = await axios(`${URL}/encrypt?plainText=${text}`);
+      // plus sign is treated as space in URL that's why converting plus sign into % sign
+      const updatedPlainText = encodeURIComponent(text);
+      const response = await axios(`${URL}/encrypt?plainText=${updatedPlainText}`);
       if (response.data?.msg === "encrypted successfully") {
         setEncryptedTxt(response.data.result);
       } else {
@@ -47,6 +49,7 @@ export default function App() {
 
   const doDecryption = async (text: string) => {
     try {
+      // plus sign is treated as space in URL that's why converting plus sign into % sign
       const updatedText = encodeURIComponent(text);
       const response = await axios(`${URL}/decrypt?encryptedText=${updatedText}`);
       if (response.data?.msg === "decrypted successfully") {
