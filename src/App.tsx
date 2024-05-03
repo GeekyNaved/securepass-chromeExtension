@@ -90,15 +90,15 @@ export default function App() {
     setEncryptedTxt("");
   }
   return (
-    <div className="min-h-screen bg-slate-800 flex items-center justify-center min-w-96 font-mono">
-      <div className="relative bg-black w-full mx-3 md:w-96">
+    <div className="min-h-screen bg-gray-800 flex items-center justify-center min-w-96 font-mono">
+      <div className="relative bg-gray-950 w-full mx-3 md:w-96">
         <div className="p-6">
           <h3 className="text-5xl text-customYellow text-center">Secure Pass</h3>
           <h5 className="text-xl text-slate-300 text-center mt-2">A password generator</h5>
           <div className="mt-5">
-            <input type="text" value={plainTxt} className="p-2 mb-4 w-full border-2 border-slate-300 rounded-sm bg-black text-customAqua focus:outline-none focus:border-customAqua" placeholder="Enter plain text here"
+            <input type="text" value={plainTxt} className="p-2 mb-4 w-full border-2 border-slate-300 rounded-sm bg-gray-950 text-customAqua focus:outline-none focus:border-customAqua" placeholder="Enter plain text here"
               onChange={handlePlainTxtChange} />
-            <textarea rows={6} value={encryptedTxt} className="p-2 w-full border-2 border-slate-300 rounded-sm bg-black text-customAqua focus:outline-none focus:border-customAqua resize-none"
+            <textarea rows={6} value={encryptedTxt} className="p-2 w-full border-2 border-slate-300 rounded-sm bg-gray-950 text-customAqua focus:outline-none focus:border-customAqua resize-none"
               placeholder="Encrypted Password will come here" onChange={handleEncryptedTxtChange} />
             <div className="flex justify-end">
               <button className="text-black bg-customAqua hover:bg-opacity-50 mt-2 text-md px-4 py-2 border-none rounded-md disabled:bg-opacity-20" onClick={copy} disabled={encryptedTxt?.length == 0 ? true : false}>copy</button>
