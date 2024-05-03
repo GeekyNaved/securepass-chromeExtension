@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-const URL = "http://localhost:3000/api";
+const URL = "https://securepass-i8in.onrender.com/api";
 
 export default function App() {
   const [plainTxt, setPlainTxt] = useState<string>("");
