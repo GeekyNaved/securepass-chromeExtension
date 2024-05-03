@@ -2,12 +2,15 @@ import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { ThreeDots } from 'react-loader-spinner';
 
 const URL = "https://securepass-i8in.onrender.com/api";
 
 export default function App() {
   const [plainTxt, setPlainTxt] = useState<string>("");
   const [encryptedTxt, setEncryptedTxt] = useState<string>("");
+  const [encryptionLoading, setEncryptionLoading] = useState(Boolean);
+  const [decryptionLoading, setDecryptionLoading] = useState(Boolean);
 
   const handlePlainTxtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -22,16 +25,19 @@ export default function App() {
   }
 
   const doEncryption = async (text: string) => {
+    setEncryptionLoading(true);
     try {
       // plus sign is treated as space in URL that's why converting plus sign into % sign
       const updatedPlainText = encodeURIComponent(text);
       const response = await axios(`${URL}/encrypt?plainText=${updatedPlainText}`);
+      setEncryptionLoading(false);
       if (response.data?.msg === "encrypted successfully") {
         setEncryptedTxt(response.data.result);
       } else {
         toast.error("Something went try again. Please try again", { toastId: "tryBlockErr" })
       }
     } catch (e) {
+      setEncryptionLoading(false);
       toast.error('Server error: something went try again. Please try again', { toastId: "catchBlockErr" });
     }
 
@@ -48,16 +54,19 @@ export default function App() {
 
 
   const doDecryption = async (text: string) => {
+    setDecryptionLoading(true);
     try {
       // plus sign is treated as space in URL that's why converting plus sign into % sign
       const updatedText = encodeURIComponent(text);
       const response = await axios(`${URL}/decrypt?encryptedText=${updatedText}`);
+      setDecryptionLoading(false);
       if (response.data?.msg === "decrypted successfully") {
         setPlainTxt(response.data.result);
       } else {
         toast.error("Something went try again. Please try again", { toastId: "tryBlockErrDecrypt" })
       }
     } catch (e: any) {
+      setDecryptionLoading(false);
       if (e.response?.data?.msg === "Encrypted text is not valid") {
         toast.error("Encrypted text is not valid. Please try again", { toastId: "invalid" })
       } else toast.error('Server error: something went try again. Please try again', { toastId: "catchBlockErrDecrypt" });
@@ -105,8 +114,50 @@ export default function App() {
             </div>
           </div>
           <div className="mt-4">
-            <button className="text-black font-bold bg-customYellow hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={generatePassword}>Generate (Encrypt)</button>
-            <button className="text-white bg-customRed hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={decryptPassword}>Decrypt (Generate original text)</button>
+            <button className="text-black font-bold bg-customYellow hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={generatePassword}>
+              {
+                encryptionLoading
+                  ? (
+                    <ThreeDots
+                      visible={true}
+                      height="20"
+                      width="40"
+                      color="rgb(0 0 0)"
+                      radius="9"
+                      ariaLabel="three-dots-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="d-flex justify-center"
+                    />
+                  )
+                  : (
+                    <span>
+                      Generate
+                    </span>
+                  )}
+            </button>
+
+            <button className="text-white bg-customRed hover:bg-opacity-80 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={decryptPassword}>
+              {
+                decryptionLoading
+                  ? (
+                    <ThreeDots
+                      visible={true}
+                      height="20"
+                      width="40"
+                      color="rgb(255 255 255)"
+                      radius="9"
+                      ariaLabel="three-dots-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="d-flex justify-center"
+                    />
+                  )
+                  : (
+                    <span>
+                      Decrypt (Generate original text)
+                    </span>
+                  )}
+            </button>
+
             <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={clear}> Clear All</button>
           </div>
         </div>
