@@ -99,11 +99,11 @@ export default function App() {
     setEncryptedTxt("");
   }
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center min-w-96 font-mono">
+    <div className="min-h-screen bg-gray-800 flex items-center justify-center min-w-80 font-mono">
       <div className="relative bg-gray-950 w-full mx-3 md:w-96">
         <div className="p-6">
-          <h3 className="text-5xl text-customYellow text-center">Secure Pass</h3>
-          <h5 className="text-xl text-slate-300 text-center mt-2">A password generator</h5>
+          <h3 className="text-4xl md:text-5xl text-customYellow text-center">Secure Pass</h3>
+          <h5 className="text-sm md:text-xl text-slate-300 text-center mt-2">A password generator</h5>
           <div className="mt-5">
             <input type="text" value={plainTxt} className="p-2 mb-4 w-full border-2 border-slate-300 rounded-sm bg-gray-950 text-customAqua focus:outline-none focus:border-customAqua" placeholder="Enter plain text here"
               onChange={handlePlainTxtChange} />
@@ -114,7 +114,7 @@ export default function App() {
             </div>
           </div>
           <div className="mt-4">
-            <button className="text-black font-bold bg-customYellow hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={generatePassword}>
+            <button className="text-black font-bold bg-customYellow hover:bg-opacity-50 mt-2 text-xs md:text-sm w-full px-4 py-2 border-none rounded-md" onClick={generatePassword}>
               {
                 encryptionLoading
                   ? (
@@ -131,12 +131,12 @@ export default function App() {
                   )
                   : (
                     <span>
-                      Generate
+                      Generate (Encrypt)
                     </span>
                   )}
             </button>
 
-            <button className="text-white bg-customRed hover:bg-opacity-80 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={decryptPassword}>
+            <button className="text-white bg-customRed hover:bg-opacity-80 mt-2 text-xs md:text-sm w-full px-4 py-2 border-none rounded-md" onClick={decryptPassword}>
               {
                 decryptionLoading
                   ? (
@@ -158,7 +158,7 @@ export default function App() {
                   )}
             </button>
 
-            <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-md w-full px-4 py-2 border-none rounded-md" onClick={clear}> Clear All</button>
+            <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-xs md:text-sm w-full px-4 py-2 border-none rounded-md" onClick={clear}> Clear All</button>
           </div>
         </div>
       </div>
