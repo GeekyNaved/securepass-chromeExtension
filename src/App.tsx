@@ -110,11 +110,11 @@ export default function App() {
             <textarea rows={6} value={encryptedTxt} className="p-2 w-full border-2 border-slate-300 rounded-sm bg-gray-950 text-customAqua focus:outline-none focus:border-customAqua resize-none"
               placeholder="Encrypted Password will come here" onChange={handleEncryptedTxtChange} />
             <div className="flex justify-end">
-              <button className="text-black bg-customAqua hover:bg-opacity-50 mt-2 text-md px-4 py-2 border-none rounded-md disabled:bg-opacity-20" onClick={copy} disabled={encryptedTxt?.length == 0 ? true : false}>copy</button>
+              <button className="text-black bg-customAqua hover:bg-opacity-50 mt-2 text-md px-4 py-3 border-none rounded-md disabled:bg-opacity-20" onClick={copy} disabled={encryptedTxt?.length == 0 ? true : false}>copy</button>
             </div>
           </div>
           <div className="mt-4">
-            <button className="text-black font-bold bg-customYellow hover:bg-opacity-50 mt-2 text-xs md:text-sm w-full px-4 py-2 border-none rounded-md" onClick={generatePassword}>
+            <button className="text-black font-bold bg-customYellow hover:bg-opacity-50 mt-2 text-xs md:text-sm w-full px-4 py-3 border-none rounded-md" onClick={generatePassword}>
               {
                 encryptionLoading
                   ? (
@@ -136,7 +136,7 @@ export default function App() {
                   )}
             </button>
 
-            <button className="text-white bg-customRed hover:bg-opacity-80 mt-2 text-xs md:text-sm w-full px-4 py-2 border-none rounded-md" onClick={decryptPassword}>
+            <button className="text-white bg-customRed hover:bg-opacity-80 mt-2 text-xs md:text-sm w-full px-4 py-3 border-none rounded-md" onClick={decryptPassword}>
               {
                 decryptionLoading
                   ? (
@@ -158,7 +158,7 @@ export default function App() {
                   )}
             </button>
 
-            <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-xs md:text-sm w-full px-4 py-2 border-none rounded-md" onClick={clear}> Clear All</button>
+            <button className="text-white bg-slate-600 hover:bg-opacity-50 mt-2 text-xs md:text-sm w-full px-4 py-3 border-none rounded-md" onClick={clear}> Clear All</button>
           </div>
         </div>
       </div>
