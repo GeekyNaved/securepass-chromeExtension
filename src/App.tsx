@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { ThreeDots } from 'react-loader-spinner';
 
-const URL = "https://securepass-i8in.onrender.com/api";
+const URL = "https://securepass-api.vercel.app/api";
 
 export default function App() {
   const [plainTxt, setPlainTxt] = useState<string>("");
