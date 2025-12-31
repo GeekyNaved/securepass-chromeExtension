@@ -1,10 +1,27 @@
 {
     "manifest_version": 3,
-    "name": "securepass",
-    "version": "1.0",
+    "name": "SecurePass - Password Generator & Encryptor",
+    "short_name": "SecurePass",
+    "version": "1.0.0",
     "description": "SecurePass is your ultimate solution for managing passwords securely and generating robust, random passphrases. With SecurePass, you can effortlessly fortify your online security and protect your valuable accounts from unauthorized access.",
+    "author": "SecurePass Team",
     "action": {
-        "default_popup": "index.html"
+        "default_popup": "index.html",
+        "default_title": "SecurePass - Password Generator",
+        "default_icon": {
+            "16": "favicon-16x16.png",
+            "32": "favicon-32x32.png",
+            "48": "android-chrome-192x192.png",
+            "128": "android-chrome-512x512.png"
+        }
+    },
+    "icons": {
+        "16": "favicon-16x16.png",
+        "32": "favicon-32x32.png",
+        "48": "android-chrome-192x192.png",
+        "128": "android-chrome-512x512.png",
+        "192": "android-chrome-192x192.png",
+        "512": "android-chrome-512x512.png"
     },
     "permissions": [
         "scripting",
@@ -15,9 +32,20 @@
         "https://*/*",
         "http://*/*"
     ],
-    "icons": {
-        "16": "favicon-16x16.png",
-        "48": "favicon-32x32.png",
-        "128": "android-chrome-192x192.png"
-    }
-  }
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "theme_color": "#4f46e5",
+    "background_color": "#ffffff",
+    "categories": ["security", "productivity", "utilities"],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Generate Password",
+            "short_name": "Generate",
+            "description": "Quickly generate a secure password",
+            "url": "/?action=generate",
+            "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+        }
+    ]
+}
