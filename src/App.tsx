@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { ThreeDots } from 'react-loader-spinner';
@@ -10,10 +10,17 @@ import {
   FiShield, 
   FiKey, 
   FiTrash2,
-  FiCheck
+  FiCheck,
+  FiDownload,
+  FiX
 } from 'react-icons/fi';
 
 const URL = "https://securepass-api.vercel.app/api";
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 
 export default function App() {
   const [plainTxt, setPlainTxt] = useState<string>("");
@@ -22,6 +29,9 @@ export default function App() {
   const [decryptionLoading, setDecryptionLoading] = useState<boolean>(false);
   const [showPlainText, setShowPlainText] = useState<boolean>(true);
   const [copied, setCopied] = useState<boolean>(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState<boolean>(false);
+  const [isInstalled, setIsInstalled] = useState<boolean>(false);
 
   const handlePlainTxtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -137,6 +147,65 @@ export default function App() {
   }
 
   const passwordStrength = getPasswordStrength(encryptedTxt);
+
+  // PWA Install functionality
+  useEffect(() => {
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+      return;
+    }
+
+    // Check if app was previously installed (iOS)
+    if ((window.navigator as any).standalone === true) {
+      setIsInstalled(true);
+      return;
+    }
+
+    // Listen for beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      // Show install prompt after a delay
+      setTimeout(() => {
+        if (!localStorage.getItem('pwa-install-dismissed')) {
+          setShowInstallPrompt(true);
+        }
+      }, 3000);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) {
+      toast.info('Install option not available. Please use your browser menu to install.');
+      return;
+    }
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      toast.success('SecurePass is being installed!');
+      setShowInstallPrompt(false);
+      setIsInstalled(true);
+    } else {
+      toast.info('Installation cancelled.');
+    }
+    
+    setDeferredPrompt(null);
+  };
+
+  const handleDismissInstall = () => {
+    setShowInstallPrompt(false);
+    localStorage.setItem('pwa-install-dismissed', 'true');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center min-w-80 p-4">
       {/* Background decoration */}
@@ -144,6 +213,36 @@ export default function App() {
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/40 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl"></div>
       </div>
+
+      {/* PWA Install Prompt */}
+      {showInstallPrompt && !isInstalled && deferredPrompt && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md mx-4 animate-slide-up">
+          <div className="bg-white border-2 border-indigo-300 rounded-xl shadow-2xl p-4 flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg">
+              <FiDownload className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-gray-800">Install SecurePass</p>
+              <p className="text-xs text-gray-600">Add to home screen for quick access</p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handleInstallClick}
+                className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md"
+              >
+                Install
+              </button>
+              <button
+                onClick={handleDismissInstall}
+                className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                aria-label="Dismiss"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="relative w-full max-w-md">
         {/* Card */}
@@ -159,6 +258,15 @@ export default function App() {
               </h1>
             </div>
             <p className="text-center text-indigo-100 text-sm font-medium">Advanced Password Generator & Encryptor</p>
+            {!isInstalled && deferredPrompt && (
+              <button
+                onClick={handleInstallClick}
+                className="mt-3 mx-auto flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-xs font-semibold rounded-lg transition-all border border-white/30"
+              >
+                <FiDownload className="w-4 h-4" />
+                <span>Install App</span>
+              </button>
+            )}
           </div>
 
           <div className="p-6 space-y-5 bg-white">
